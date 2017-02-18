@@ -219,3 +219,22 @@ span {
     display: block;
   }
 }
+
+.listBullet {
+
+  list-style-type: none;
+
+}
+
+#onlineleft {
+
+  text-align: left;
+
+}
+
+#button1{
+
+   width: 150px;
+  text-align: center;
+  margin:0 auto;
+}
