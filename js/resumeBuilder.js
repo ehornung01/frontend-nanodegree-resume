@@ -1,6 +1,3 @@
-/*
-This is empty on purpose! Your code to build the resume will go here.
- */
 var bio = {
 
     name: 'Edward Hornung',
@@ -17,6 +14,19 @@ var bio = {
     ],
     biopic: 'https://www.youtube.com/watch?v=XyJAX8F2jPg&list=PL1BA5553A49637634',
     display: function myName() {
+        $('#header').prepend(HTMLheaderName + HTMLheaderRole)
+        $('#topContacts, #footerContacts').append(HTMLmobile + HTMLemail + HTMLgithub + HTMLlocation);
+        $('#header').append(HTMLbioPic + HTMLwelcomeMsg + HTMLskillsStart);
+
+        $(bio.skills).each(function() {
+        $('#header').append($(HTMLskills));
+        $('.skillSet').last().text(this);
+    });
+
+        // INTERNATIONALIZE BUTTON!!
+
+        $('#header').append(internationalizeButton);
+
         $('#name').text(bio.name);
         $('#role').text(bio.role);
         $('.mobile').text(bio.contacts.mobile);
@@ -36,7 +46,7 @@ var education =
             name: 'Arizona State University',
             location: 'Tempe, Arizona',
             degree: 'Bachelor of Liberal Arts and Sciences',
-            majors: 'Global Studies',
+            majors: ['Global Studies'],
             dates: 'August 2004 - May 2008',
             url: "https://www.asu.edu/"
         }],
@@ -45,9 +55,10 @@ var education =
             school: 'Udacity',
             dates: 'January 2017 - Present',
             url: 'https://www.udacity.com/course/front-end-web-developer-nanodegree--nd001/',
-        }, ],
+        }],
 
         display: function learnings() {
+
 
             education.schools.forEach(function(e) {
 
@@ -56,9 +67,8 @@ var education =
                 var formattedName = HTMLschoolName.replace("%data%", e.name).replace('#', e.url);
                 var formattedDegree = HTMLschoolDegree.replace("%data%", e.degree);
                 var formattedDates = HTMLschoolDates.replace("%data%", e.dates);
-                var formattedLocation = HTMLschoolDates.replace("%data%", e.location);
-                var formattedMajor = HTMLschoolMajor.replace("%data%", e.majors);
-
+                var formattedLocation = HTMLschoolLocation.replace("%data%", e.location);
+                var formattedMajor = HTMLschoolMajor.replace("%data%", e.majors.join(", "));
 
                 $(".education-entry").append(formattedName + formattedDegree + formattedDates + formattedLocation + formattedMajor);
             });
@@ -72,8 +82,6 @@ var education =
                 var formattedSchool = HTMLonlineSchool.replace("%data%", e.school);
                 var formattedDates = HTMLonlineDates.replace("%data%", e.dates);
                 var formattedUrl = HTMLonlineURL.replace('%data%', e.url).replace('#', e.url);
-
-
 
                 $(".education-entry:last").append(formattedTitle + formattedSchool + formattedDates + formattedUrl);
             });
@@ -144,55 +152,47 @@ var work = {
 
 var projects = {
 
-    myProjects: [
+    projects: [
 
         {
             title: 'Project 1',
             dates: '2017',
             description: "Website that performs a specific function",
-            images: 'http://h7ip4n5r86idrrms.zippykid.netdna-cdn.com/wp-content/uploads/2013/09/blueprint.jpg'
+            images: ['images/197x148.gif']
         }
     ],
     display: function allProjects() {
 
-        projects.myProjects.forEach(function(project) {
+        projects.projects.forEach(function(project) {
+            var imageElements = [];
 
             $("#projects").append(HTMLprojectStart);
 
             var formattedTitle = HTMLprojectTitle.replace("%data%", project.title);
             var formattedDates = HTMLprojectDates.replace("%data%", project.dates);
             var formattedDescription = HTMLprojectDescription.replace("%data%", project.description);
-            var formattedImage = HTMLprojectImage.replace("%data%", 'images/197x148.gif');
 
-            $('.project-entry:last').append(formattedTitle + formattedDates + formattedDescription + formattedImage);
+            project.images.forEach(function(image) {
+                var formattedImage = HTMLprojectImage.replace("%data%", image);
+                imageElements.push(formattedImage);
+
+            });
+
+            $('.project-entry:last').append(formattedTitle + formattedDates + formattedDescription + imageElements.join(""));
         });
     }
 };
 
 
-function aba(e) {
-
-    console.log("ready!");
-
-
-    $('#header').prepend(HTMLheaderName + HTMLheaderRole);
-
-    $('#topContacts').append(HTMLmobile + HTMLemail + HTMLgithub + HTMLlocation);
-    $('#footerContacts').append(HTMLmobile + HTMLemail + HTMLgithub + HTMLlocation);
-    $('#header').append(HTMLbioPic + HTMLwelcomeMsg + HTMLskillsStart);
-    $(bio.skills).each(function() {
-        $('#header').append($(HTMLskills));
-        $('.skillSet').last().text(this);
-    });
+function resumeBuilder() {
 
     bio.display();
     work.display();
     projects.display();
     education.display();
-    $('#header').append(internationalizeButton);
     $('#mapDiv').append(googleMap);
 
 }
 
-aba();
+resumeBuilder();
 window.addEventListener('load', initializeMap);
